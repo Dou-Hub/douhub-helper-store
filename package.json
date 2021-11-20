@@ -1,8 +1,8 @@
 {
   "name": "douhub-helper-store",
-  "version": "1.0.10",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "version": "1.0.11",
+  "main": ".build/index.js",
+  "types": ".build/index.d.ts",
   "scripts": {
     "test": "jest"
   },
