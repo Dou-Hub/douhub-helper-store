@@ -1,10 +1,12 @@
 {
   "name": "douhub-helper-store",
-  "version": "1.0.15",
+  "version": "1.0.17",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "prebuildpackage": "npm run compile",
+    "buildpackage": "npm pack"
   },
   "repository": {
     "type": "git",
