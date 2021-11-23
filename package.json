@@ -1,7 +1,7 @@
 {
-  "name": "douhub-helper-store",
+  "name": "douhub-ui-store",
   "licence": "MIT",
-  "version": "1.0.17",
+  "version": "1.0.19",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dou-hub/douhub-helper-store.git"
+    "url": "git+https://github.com/dou-hub/douhub-ui-store.git"
   },
   "dependencies": {
     "lodash": "^4.17.21",
