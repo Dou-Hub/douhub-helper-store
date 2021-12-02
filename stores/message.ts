@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { find } from 'lodash';
+import { find, isEmpty } from 'lodash';
 import {
     applySnapshot,
     Instance,
@@ -54,7 +54,7 @@ export function initializeMessageStore(snapshot = null) {
 
     // If your page has Next.js data fetching methods that use a Mobx store, it will
     // get hydrated here, check `pages/ssg.tsx` and `pages/ssr.tsx` for more details
-    if (snapshot) {
+    if (snapshot && isEmpty(snapshot)) {
         applySnapshot(_store, snapshot);
     }
     // For SSG and SSR always create a new store

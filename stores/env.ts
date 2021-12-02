@@ -1,11 +1,12 @@
-import { useMemo } from 'react'
+import { useMemo } from 'react';
 import {
   applySnapshot,
   Instance,
   SnapshotIn,
   SnapshotOut,
   types,
-} from 'mobx-state-tree'
+} from 'mobx-state-tree';
+import { isEmpty } from 'lodash';
 
 const getSize = (width: number) => {
   if (width >= 1200) return 'xl';
@@ -17,17 +18,6 @@ const getSize = (width: number) => {
 }
 
 let envStore: IEnvStore | undefined;
-
-export type Env =
-  {
-    width: number,
-    height: number,
-    offsetHeight: number,
-    scrollTop: number,
-    scrollHeight: number,
-    offsetToBottom: number,
-    size: string
-  }
 
 export const EnvStore = types
   .model({
@@ -74,7 +64,7 @@ export function initializeEnvStore(snapshot = null) {
 
   // If your page has Next.js data fetching methods that use a Mobx envStore, it will
   // get hydrated here, check `pages/ssg.tsx` and `pages/ssr.tsx` for more details
-  if (snapshot) {
+  if (snapshot && !isEmpty(snapshot)) {
     applySnapshot(_envStore, snapshot)
   }
   // For SSG and SSR always create a new envStore

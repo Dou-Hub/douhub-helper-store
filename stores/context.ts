@@ -1,11 +1,12 @@
-import { useMemo } from 'react'
+import { useMemo } from 'react';
 import {
     applySnapshot,
     Instance,
     SnapshotIn,
     SnapshotOut,
     types,
-} from 'mobx-state-tree'
+} from 'mobx-state-tree';
+import { isEmpty } from 'lodash';
 
 let store: IContextStore | undefined
 
@@ -33,7 +34,7 @@ export function initializeContextStore(snapshot = null) {
 
     // If your page has Next.js data fetching methods that use a Mobx store, it will
     // get hydrated here, check `pages/ssg.tsx` and `pages/ssr.tsx` for more details
-    if (snapshot) {
+    if (snapshot && isEmpty(snapshot)) {
         applySnapshot(_store, snapshot);
     }
     // For SSG and SSR always create a new store
