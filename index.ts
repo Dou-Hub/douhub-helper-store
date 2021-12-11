@@ -7,3 +7,6 @@
 export { IMessageStore , MessageStore , initializeMessageStore , useMessageStore } from './stores/message';
 export { IEnvStore , EnvStore, initializeEnvStore , useEnvStore  } from './stores/env';
 export { IContextStore , ContextStore , initializeContextStore , useContextStore  } from './stores/context';
+
+export { EnvCenter } from './libs/env';
+export { MessageCenter, sendMessage } from './libs/message';
