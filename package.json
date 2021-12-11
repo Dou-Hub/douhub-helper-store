@@ -1,7 +1,7 @@
 {
   "name": "douhub-ui-store",
   "licence": "MIT",
-  "version": "1.0.23",
+  "version": "1.0.25",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {

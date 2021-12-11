@@ -13,11 +13,13 @@ const MESSAGE_STORE_LIST_MAX_SIZE = 100;
 
 export type Message = {
     id: string,
+    type: string,
     content: string
 }
 
 const MessageItem = types.model({
     id: types.string,
+    type: types.string,
     content: types.string
 });
 
@@ -25,20 +27,22 @@ const MessageItem = types.model({
 export const MessageStore = types
     .model({
         id: types.string,
+        type: types.string,
         content: types.string,
         list: types.array(MessageItem)
     })
     .actions((self) => {
         const addMessage = (message: Message) => {
             self.id = message.id;
+            self.type = message.type;
             self.content = message.content;
-            self.list.push({ id: self.id, content: self.content });
+            self.list.push({ id: self.id, type: self.type, content: self.content });
             if (self.list.length > MESSAGE_STORE_LIST_MAX_SIZE) {
                 self.list.shift();
             }
         }
         const getMessage = (id: string): Message | undefined => {
-            if (id == self.id) return { id: self.id, content: self.content };
+            if (id == self.id) return { id: self.id, type: self.type, content: self.content };
             //try to find from array
             return find(self.list, (item) => item.id == id);
         }
@@ -50,7 +54,7 @@ export type IMessageStoreSnapshotIn = SnapshotIn<typeof MessageStore>
 export type IMessageStoreSnapshotOut = SnapshotOut<typeof MessageStore>
 
 export function initializeMessageStore(snapshot = null) {
-    const _store = store ?? MessageStore.create();
+    const _store = store ?? MessageStore.create({ id: '', type: '', content: '{}', list: [] });
 
     // If your page has Next.js data fetching methods that use a Mobx store, it will
     // get hydrated here, check `pages/ssg.tsx` and `pages/ssr.tsx` for more details
