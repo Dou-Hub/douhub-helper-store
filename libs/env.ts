@@ -2,6 +2,7 @@
 import { useEffect, createElement } from 'react';
 import { isEmpty, throttle } from 'lodash';
 import { useEnvStore } from "../stores/env";
+import { _window,  _process} from "douhub-helper-util";
 
 let envCache = {
     height: 0,
@@ -9,9 +10,6 @@ let envCache = {
     scrollTop: 0,
     offsetHeight: 0
 };
-
-let _window: any = typeof window !== "undefined" ? window : {};
-let _process: any = typeof process !== "undefined" ? process : {};;
 
 export const EnvCenter = (props: any) => {
     const { stage } = props;
