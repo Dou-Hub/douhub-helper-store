@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { _process } from 'douhub-helper-util';
 import {
     applySnapshot,
     Instance,
@@ -17,7 +18,15 @@ const getSize = (width: number) => {
     return 'xs';
 }
 
-let envStore: IEnvStore | undefined;
+const INIT_VALUE = {
+    width: 0,
+    height: 0,
+    offsetHeight: 0,
+    scrollTop: 0,
+    scrollHeight: 0,
+    offsetToBottom: 0,
+    size: ''
+}
 
 export const EnvStore = types
     .model({
@@ -51,31 +60,19 @@ export type IEnvStore = Instance<typeof EnvStore>;
 export type IEnvStoreSnapshotIn = SnapshotIn<typeof EnvStore>;
 export type IEnvStoreSnapshotOut = SnapshotOut<typeof EnvStore>;
 
-export function initializeEnvStore(snapshot = null) {
-    const _envStore = envStore ?? EnvStore.create({
-        width: 0,
-        height: 0,
-        offsetHeight: 0,
-        scrollTop: 0,
-        scrollHeight: 0,
-        offsetToBottom: 0,
-        size: ''
-    });
+let envStore: IEnvStore = EnvStore.create(INIT_VALUE);
 
-    // If your page has Next.js data fetching methods that use a Mobx envStore, it will
-    // get hydrated here, check `pages/ssg.tsx` and `pages/ssr.tsx` for more details
-    if (snapshot && !isEmpty(snapshot)) {
-        applySnapshot(_envStore, snapshot)
+export const initializeEnvStore = (snapshot?:Record<string,any>) : IEnvStore => {
+    _process._envStore = _process._envStore ?? EnvStore.create(INIT_VALUE);
+
+    if (snapshot && isEmpty(snapshot)) {
+        applySnapshot(_process._envStore, snapshot);
     }
-    // For SSG and SSR always create a new envStore
-    // if (typeof window === 'undefined') return _store
-    // Create the envStore once in the client
-    if (!envStore) envStore = _envStore
-
-    return envStore
-}
-
-export function useEnvStore(initialState: any) {
-    const envStore = useMemo(() => initializeEnvStore(initialState), [initialState])
+    envStore = _process._envStore;
     return envStore;
 }
+
+export function useEnvStore(initialState?: Record<string,any>) {
+    return useMemo(() => initializeEnvStore(initialState), [initialState]);
+}
+

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { _process } from 'douhub-helper-util';
 import {
     applySnapshot,
     Instance,
@@ -8,14 +9,14 @@ import {
 } from 'mobx-state-tree';
 import { isEmpty } from 'lodash';
 
-let contextStore: IContextStore | undefined
+const INIT_VALUE = { data: '{}' };
 
 export const ContextStore = types
     .model({
         data: types.string
     })
-    .actions((self) => {
-        const setData = (newData: Record<string,any>) => {
+    .actions((self: Record<string, any>) => {
+        const setData = (newData: Record<string, any>) => {
             self.data = JSON.stringify(newData);
         }
         const getData = (name: string) => {
@@ -23,29 +24,26 @@ export const ContextStore = types
             return data[name];
         }
         return { setData, getData }
-    })
+    });
+
 
 export type IContextStore = Instance<typeof ContextStore>;
 export type IContextStoreSnapshotIn = SnapshotIn<typeof ContextStore>;
 export type IContextStoreSnapshotOut = SnapshotOut<typeof ContextStore>;
 
-export function initializeContextStore(snapshot = null) {
-    const _contextStore = contextStore ?? ContextStore.create({data:'{}'});
+let contextStore: IContextStore = ContextStore.create(INIT_VALUE);
 
-    // If your page has Next.js data fetching methods that use a Mobx store, it will
-    // get hydrated here, check `pages/ssg.tsx` and `pages/ssr.tsx` for more details
+export const initializeContextStore = (snapshot?:Record<string,any>) : IContextStore => {
+    _process._contextStore = _process._contextStore ?? ContextStore.create(INIT_VALUE);
+
     if (snapshot && isEmpty(snapshot)) {
-        applySnapshot(_contextStore, snapshot);
+        applySnapshot(_process._contextStore, snapshot);
     }
-    // For SSG and SSR always create a new store
-    // if (typeof window === 'undefined') return _store
-    // Create the store once in the client
-    if (!contextStore) contextStore = _contextStore;
-
-    return contextStore
+    contextStore = _process._contextStore;
+    return contextStore;
 }
 
-export function useContextStore(initialState: any) {
-    const store = useMemo(() => initializeContextStore(initialState), [initialState]);
-    return store;
+export function useContextStore(initialState?: Record<string,any>) {
+    return useMemo(() => initializeContextStore(initialState), [initialState]);
 }
+

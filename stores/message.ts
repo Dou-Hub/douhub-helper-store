@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { _process } from 'douhub-helper-util';
 import { find, isEmpty } from 'lodash';
 import {
     applySnapshot,
@@ -23,6 +24,7 @@ const MessageItem = types.model({
     content: types.string
 });
 
+const INIT_VALUE = { id: '', type: '', content: '{}', list: [] };
 
 export const MessageStore = types
     .model({
@@ -53,23 +55,20 @@ export type IMessageStore = Instance<typeof MessageStore>
 export type IMessageStoreSnapshotIn = SnapshotIn<typeof MessageStore>
 export type IMessageStoreSnapshotOut = SnapshotOut<typeof MessageStore>
 
-export function initializeMessageStore(snapshot = null) {
-    const _store = store ?? MessageStore.create({ id: '', type: '', content: '{}', list: [] });
 
-    // If your page has Next.js data fetching methods that use a Mobx store, it will
-    // get hydrated here, check `pages/ssg.tsx` and `pages/ssr.tsx` for more details
+let messageStore: IMessageStore = MessageStore.create(INIT_VALUE);
+
+export const initializeMessageStore = (snapshot?:Record<string,any>) : IMessageStore => {
+    _process._messageStore = _process._messageStore ?? MessageStore.create(INIT_VALUE);
+
     if (snapshot && isEmpty(snapshot)) {
-        applySnapshot(_store, snapshot);
+        applySnapshot(_process._messageStore, snapshot);
     }
-    // For SSG and SSR always create a new store
-    // if (typeof window === 'undefined') return _store
-    // Create the store once in the client
-    if (!store) store = _store;
-
-    return store;
+    messageStore = _process._messageStore;
+    return messageStore;
 }
 
-export function useMessageStore(initialState: any) {
-    const store = useMemo(() => initializeMessageStore(initialState), [initialState])
-    return store
+export function useMessageStore(initialState?: Record<string,any>) {
+    return useMemo(() => initializeMessageStore(initialState), [initialState]);
 }
+

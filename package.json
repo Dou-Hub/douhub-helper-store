@@ -1,7 +1,7 @@
 {
   "name": "douhub-ui-store",
   "licence": "MIT",
-  "version": "1.0.27",
+  "version": "1.0.33",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
@@ -14,7 +14,7 @@
     "url": "git+https://github.com/dou-hub/douhub-ui-store.git"
   },
   "dependencies": {
-    "douhub-helper-util": "1.0.28",
+    "douhub-helper-util": "1.0.36",
     "lodash": "^4.17.21",
     "mobx": "^6.3.5",
     "mobx-react": "^7.2.1",
