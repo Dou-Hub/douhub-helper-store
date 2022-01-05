@@ -25,7 +25,8 @@ const INIT_VALUE = {
     scrollTop: 0,
     scrollHeight: 0,
     offsetToBottom: 0,
-    size: ''
+    size: '',
+    data: '{}'
 }
 
 export const EnvStore = types
@@ -36,9 +37,10 @@ export const EnvStore = types
         scrollTop: types.number,
         scrollHeight: types.number,
         offsetToBottom: types.number,
-        size: types.string
+        size: types.string,
+        data: types.string
     })
-    .actions((self) => {
+    .actions((self: Record<string, any>) => {
 
         const setWidth = (width: number) => {
             self.width = width;
@@ -53,7 +55,24 @@ export const EnvStore = types
             self.offsetToBottom = offsetHeight - height - scrollTop;
         }
 
-        return { setWidth, setHeight };
+        const setData = (newData: Record<string, any>) => {
+            self.data = JSON.stringify(newData);
+        }
+        const getData = () => {
+            const data = JSON.parse(self.data);
+            return data;
+        }
+        const setValue = (name: string, value: any) => {
+            const data = JSON.parse(self.data);
+            data[name] = value;
+            self.data = JSON.stringify(data);
+        }
+        const getValue = (name: string) => {
+            const data = JSON.parse(self.data);
+            return data[name];
+        }
+
+        return { setWidth, setHeight, setValue, getValue, setData, getData };
     })
 
 export type IEnvStore = Instance<typeof EnvStore>;
@@ -62,7 +81,7 @@ export type IEnvStoreSnapshotOut = SnapshotOut<typeof EnvStore>;
 
 let envStore: IEnvStore = EnvStore.create(INIT_VALUE);
 
-export const initializeEnvStore = (snapshot?:Record<string,any>) : IEnvStore => {
+export const initializeEnvStore = (snapshot?: Record<string, any>): IEnvStore => {
     _process._envStore = _process._envStore ?? EnvStore.create(INIT_VALUE);
 
     if (snapshot && isEmpty(snapshot)) {
@@ -72,7 +91,7 @@ export const initializeEnvStore = (snapshot?:Record<string,any>) : IEnvStore => 
     return envStore;
 }
 
-export function useEnvStore(initialState?: Record<string,any>) {
+export function useEnvStore(initialState?: Record<string, any>) {
     return useMemo(() => initializeEnvStore(initialState), [initialState]);
 }
 

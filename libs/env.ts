@@ -13,7 +13,7 @@ let envCache = {
 
 export const EnvCenter = (props: any) => {
     const { stage } = props;
-    const envStore = useEnvStore({});
+    const envStore = useEnvStore();
     const envHandler = throttle(() => {
         
         if (isEmpty(_window)) return ()=>{};

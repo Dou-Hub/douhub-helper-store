@@ -19,11 +19,20 @@ export const ContextStore = types
         const setData = (newData: Record<string, any>) => {
             self.data = JSON.stringify(newData);
         }
-        const getData = (name: string) => {
+        const getData = () => {
+            const data = JSON.parse(self.data);
+            return data;
+        }
+        const setValue = (name: string, value: any) => {
+            const data = JSON.parse(self.data);
+            data[name] = value;
+            self.data = JSON.stringify(data);
+        }
+        const getValue = (name: string) => {
             const data = JSON.parse(self.data);
             return data[name];
         }
-        return { setData, getData }
+        return { setData, getData, setValue, getValue }
     });
 
 

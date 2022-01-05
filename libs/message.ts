@@ -12,7 +12,7 @@ export const sendMessage = (id: string, type: string, data: Record<string, any>)
 export const MessageCenter = (props: any) => {
 
     const { stage } = props;
-    const messageStore = useMessageStore(null);
+    const messageStore = useMessageStore();
 
     const messageHandler = (message: Record<string, any>) => {
         const data = message.data;
