@@ -2,7 +2,7 @@
 import { useEffect, createElement } from 'react';
 import { isEmpty, throttle } from 'lodash';
 import { useEnvStore } from "../stores/env";
-import { _window,  _process} from "douhub-helper-util";
+import { _window,  _process, _track} from "douhub-ui-web";
 
 let envCache = {
     height: 0,
@@ -11,12 +11,11 @@ let envCache = {
     offsetHeight: 0
 };
 
-export const EnvCenter = (props: any) => {
-    const { stage } = props;
+export const EnvCenter = () => {
     const envStore = useEnvStore();
     const envHandler = throttle(() => {
         
-        if (isEmpty(_window)) return ()=>{};
+        //if (isEmpty(_window)) return ()=>{};
 
         const env = {
             width: _window.innerWidth,
@@ -41,7 +40,7 @@ export const EnvCenter = (props: any) => {
             envStore.setHeight(env.height, env.offsetHeight, env.scrollTop, env.scrollHeight);
         }
 
-        if (stage !== 'prod') console.log({ height: env.height, width: env.width, offsetHeight: env.offsetHeight, scrollTop: env.scrollTop, scrollHeight: env.scrollHeight });
+        if (_track) console.log({ height: env.height, width: env.width, offsetHeight: env.offsetHeight, scrollTop: env.scrollTop, scrollHeight: env.scrollHeight });
 
     }, 100);
 

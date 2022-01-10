@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { _process } from 'douhub-helper-util';
+import { _process } from 'douhub-ui-web';
 import {
     applySnapshot,
     Instance,

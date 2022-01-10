@@ -1,7 +1,7 @@
 import { useEffect, createElement } from 'react';
 import { useMessageStore } from '../stores/message';
 import { isEmpty} from 'lodash';
-import { _window,  _process} from "douhub-helper-util";
+import {_track, _window,  _process} from 'douhub-ui-web';
 
 export const sendMessage = (id: string, type: string, data: Record<string, any>) => {
     //console.log({ postMessage: { source: 'local', id, type, data } });
@@ -9,19 +9,18 @@ export const sendMessage = (id: string, type: string, data: Record<string, any>)
     _window.postMessage({ source: 'local', id, type, data });
 }
 
-export const MessageCenter = (props: any) => {
+export const MessageCenter = () => {
 
-    const { stage } = props;
     const messageStore = useMessageStore();
 
     const messageHandler = (message: Record<string, any>) => {
         const data = message.data;
         if (data.source != 'local') {
-            console.log({ title: 'non-local message was captured.', message });
+            if (_track) console.log({ title: 'non-local message was captured.', message });
             return;
         }
         messageStore.addMessage({ id: data.id, type: data.type, content: JSON.stringify(data.data) });
-        if (stage !== 'prod') console.log({ message });
+        if (_track) console.log({ message });
     };
 
     useEffect(() => {

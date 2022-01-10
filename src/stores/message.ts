@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { _process } from 'douhub-helper-util';
+import { _process } from 'douhub-ui-web';
 import { find, isEmpty } from 'lodash';
 import {
     applySnapshot,
@@ -9,7 +9,6 @@ import {
     types,
 } from 'mobx-state-tree';
 
-let store: IMessageStore | undefined;
 const MESSAGE_STORE_LIST_MAX_SIZE = 100;
 
 export type Message = {
