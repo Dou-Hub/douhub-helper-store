@@ -1,8 +1,8 @@
 
 import { useEffect, createElement } from 'react';
 import { isEmpty, throttle } from 'lodash';
-import { useEnvStore } from "../stores/env";
-import { _window,  _process, _track} from "douhub-ui-web";
+import { useEnvStore } from "./stores/env";
+import { _window,  _process, _track} from './util';
 
 let envCache = {
     height: 0,
