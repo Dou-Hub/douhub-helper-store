@@ -2,7 +2,7 @@
 import { useEffect, createElement } from 'react';
 import { isEmpty, throttle } from 'lodash';
 import { useEnvStore } from "./stores/env";
-import { _window,  _process, _track} from './util';
+import { _window, _track, _process} from './util';
 
 let envCache = {
     height: 0,
