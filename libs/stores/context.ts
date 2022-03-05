@@ -9,11 +9,12 @@ import {
 } from 'mobx-state-tree';
 import { isEmpty } from 'lodash';
 
-const INIT_VALUE = { data: '{}' };
+const INIT_VALUE = { data: '{}', regardingId:'' };
 
 export const ContextStore = types
     .model({
-        data: types.string
+        data: types.string,
+        regardingId: types.string
     })
     .actions((self: Record<string, any>) => {
         const setData = (newData: Record<string, any>) => {
@@ -32,7 +33,13 @@ export const ContextStore = types
             const data = JSON.parse(self.data);
             return data[name];
         }
-        return { setData, getData, setValue, getValue }
+        const setRegardingId = (regardingId: any) => {
+            self.regardingId = regardingId;
+        }
+        const getRegardingId = () => {
+            return self.regardingId;
+        }
+        return { setData, getData, setValue, getValue, setRegardingId, getRegardingId }
     });
 
 
@@ -42,7 +49,7 @@ export type IContextStoreSnapshotOut = SnapshotOut<typeof ContextStore>;
 
 let contextStore: IContextStore = ContextStore.create(INIT_VALUE);
 
-export const initializeContextStore = (snapshot?:Record<string,any>) : IContextStore => {
+export const initializeContextStore = (snapshot?: Record<string, any>): IContextStore => {
     _process._contextStore = _process._contextStore ?? ContextStore.create(INIT_VALUE);
 
     if (snapshot && isEmpty(snapshot)) {
@@ -52,7 +59,7 @@ export const initializeContextStore = (snapshot?:Record<string,any>) : IContextS
     return contextStore;
 }
 
-export function useContextStore(initialState?: Record<string,any>) {
+export function useContextStore(initialState?: Record<string, any>) {
     return useMemo(() => initializeContextStore(initialState), [initialState]);
 }
 
