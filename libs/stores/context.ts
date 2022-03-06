@@ -9,12 +9,11 @@ import {
 } from 'mobx-state-tree';
 import { isEmpty } from 'lodash';
 
-const INIT_VALUE = { data: '{}', regardingId:'' };
+const INIT_VALUE = { data: '{}' };
 
 export const ContextStore = types
     .model({
-        data: types.string,
-        regardingId: types.string
+        data: types.string
     })
     .actions((self: Record<string, any>) => {
         const setData = (newData: Record<string, any>) => {
@@ -33,13 +32,7 @@ export const ContextStore = types
             const data = JSON.parse(self.data);
             return data[name];
         }
-        const setRegardingId = (regardingId: any) => {
-            self.regardingId = regardingId;
-        }
-        const getRegardingId = () => {
-            return self.regardingId;
-        }
-        return { setData, getData, setValue, getValue, setRegardingId, getRegardingId }
+        return { setData, getData, setValue, getValue}
     });
 
 
