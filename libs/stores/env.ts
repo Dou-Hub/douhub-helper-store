@@ -7,7 +7,7 @@ import {
     SnapshotOut,
     types,
 } from 'mobx-state-tree';
-import { isEmpty } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 const getSize = (width: number) => {
     if (width >= 1200) return 'xl';
@@ -64,7 +64,15 @@ export const EnvStore = types
         }
         const setValue = (name: string, value: any) => {
             const data = JSON.parse(self.data);
-            data[name] = value;
+            if (isNil(value))
+            {
+                delete data[name];
+            }
+            else
+            {
+                data[name] = value;
+            }
+           
             self.data = JSON.stringify(data);
         }
         const getValue = (name: string) => {
