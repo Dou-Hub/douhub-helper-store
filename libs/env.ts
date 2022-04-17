@@ -11,8 +11,8 @@ let envCache = {
     offsetHeight: 0
 };
 
-export const EnvCenter = () => {
-    const envStore = useEnvStore();
+export const EnvCenter = (initialState?: Record<string, any>) => {
+    const envStore = useEnvStore(initialState);
     const envHandler = throttle(() => {
         
         //if (isEmpty(_window)) return ()=>{};
