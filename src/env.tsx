@@ -4,7 +4,7 @@ import { isEmpty, throttle } from 'lodash';
 import { useEnvStore } from "./stores/env";
 import { _window, _track, _process} from './util';
 
-let envCache = {
+const envCache = {
     height: 0,
     width: 0,
     scrollTop: 0,

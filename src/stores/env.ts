@@ -58,10 +58,12 @@ export const EnvStore = types
         const setData = (newData: Record<string, any>) => {
             self.data = JSON.stringify(newData);
         }
+        
         const getData = () => {
             const data = JSON.parse(self.data);
             return data;
         }
+
         const setValue = (name: string, value: any) => {
             const data = JSON.parse(self.data);
             if (isNil(value))
